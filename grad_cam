@@ -1,0 +1,37 @@
+#순전파/역전파 hook 등록하기
+class GradCAM:
+    def __init__(self, model, main, sub):
+        self.model=model.eval()
+        self.register_hook(main, sub)
+
+    def register_hook(self, main, sub):
+        #for name, module in self.model.named_children():  #큰 덩어리는 보지 않아서 훅 걸리지 않음
+        for name, module in self.model.named_modules():
+            #if name==main:
+                #for sub_name, sub_module in module[-1].named_children():
+                if main in name and sub == name.split('.')[-1]:
+                        module.register_forward_hook(self.forward_hook)
+                        module.register_full_backward_hook(self.backward_hook)
+
+    def forward_hook(self, module, input, output):
+        self.feature_map=output
+
+    def backward_hook(self, module, grad_input, grad_output):
+        self.gradient=grad_output[0]    #grad_output은 튜플 형태
+
+    def __call__(self, x):
+        output=self.model(x)
+
+        index=output.argmax(axis=1)
+        one_hot=torch.zeros_like(output)
+        for i in range(output.size(0)):
+            one_hot[i][index[i]]=1
+
+        self.model.zero_grad()   #모델의 모든 미분값 0으로
+        output.backward(gradient=one_hot, retain_graph=True)    #계산 그래프 보존. 하나의 이미지에서 여러 클래스의 grad_cam을 보고 싶을때 필요.(안그러면 순전파 한번 더해야함)
+
+        a_k=torch.mean(self.gradient, dim=(2,3), keepdim=True)
+        grad_cam=torch.sum(a_k*self.feature_map, dim=1)
+        grad_cam=torch.relu(grad_cam)
+
+        return grad_cam
