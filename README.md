@@ -4,11 +4,11 @@
 
 ## Models
 - **Seq2Seq Transformer** — Sequence-to-sequence Transformer 구현
-- **ResNet** — Residual 구현
+- **ResNet** — Resnet 구현
 - **Skip-gram** — Skip-gram 모델을 사용한 Word embedding model 구현
 
 ## Utilities
-- **Evaluations** — 오차행렬, 
+- **Evaluations** — 오차행렬, precision recall curve plot 
 - **Grad-CAM**
 
 
