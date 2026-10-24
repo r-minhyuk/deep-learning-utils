@@ -3,6 +3,7 @@
 모델 평가지표, 해석도구, 파이토치 모델 구현 모음
 
 ## Models
+파이토치로 구현
 - **Seq2Seq Transformer** — Sequence-to-sequence Transformer 구현
 - **ResNet** — Resnet 구현
 - **Skip-gram** — Skip-gram 모델을 사용한 Word embedding model 구현
