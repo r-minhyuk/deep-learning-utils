@@ -1,6 +1,6 @@
 # Deep Learning Utils
 
-모델 평가지표, 해석도구, 파이토치 모델 구현 모음
+[파이토치 트랜스포머를 활용한 자연어 처리](https://wikibook.co.kr/pytorchtrf/)를 공부하며 구현한 모델 평가지표, 해석도구, 파이토치 모델 모음
 
 ## Models
 파이토치로 구현
